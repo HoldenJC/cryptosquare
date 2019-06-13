@@ -1,10 +1,18 @@
 var userPhrase = "";
-var regex = /[^0-9a-z]/gi;
+var numLetterOnly = /[^0-9a-z]/gi;
 var encryptedPhrase = "";
+var colSize, regexTemp, userPhraseRowSplit;
+var inputArray = [];
+
 
 var encrypt = function(input){
-  encryptedPhrase = (input.replace(regex, '')).toLowerCase();     // takes out punctuation, spaces, and uppercase
-  rowSize = Math.ceil(Math.sqrt(input.length));
+  encryptedPhrase = (input.replace(numLetterOnly, '')).toLowerCase();     // takes out punctuation, spaces, and uppercase
+  colSize = Math.ceil(Math.sqrt(input.length));
+  regexTemp = new RegExp(".{1," + colSize + "}");
+  userPhraseRowSplit = new RegExp(regexTemp.source, regexTemp.flags + "g");     // creates regex to split a word by rows
+  inputArray = input.match(userPhraseRowSplit);         // outputs ["ba", "nd"]
+  // encryptedPhrase = encryptedPhrase.splice(colSize, 0, " ")
+
 }
 
 $(function(){
@@ -17,8 +25,8 @@ $(function(){
 
     encrypt(userPhrase);
 
-    // $("#result").empty().append(encryptedPhrase);
-    $("#result").empty().append(rowSize);
+    $("#result").empty().append(inputArray);
+    // $("#result").empty().append(rowSize);
 
   });
 });
